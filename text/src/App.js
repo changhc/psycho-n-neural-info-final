@@ -18,6 +18,7 @@ class App extends Component {
     };
     this.fetchText = this.fetchText.bind(this);
     this.closeAd = this.closeAd.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
   componentDidMount() {
@@ -47,11 +48,36 @@ class App extends Component {
     this.setState({ showAd: false, time: Date.now() - this.state.time });
   }
 
+  submit() {
+    window.fetch(`${remoteUrl}/api/result`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: this.state.userId,
+        time: this.state.time,
+        type: this.state.type,
+        adNo: this.state.adNo,
+        first: true,
+      }),
+    }).then((res) => {
+      if (res.status > 300) {
+        throw new Error();
+      }
+      return res.json();
+    })
+    .then((body) => {
+      console.log(body);
+      window.location.replace('...');
+    })
+    .catch(err => console.error(err));
+  }
+
   render() {
     return (
       <div className={style.main}>
-        {this.state.showAd ? <Popup adUrl={`${remoteUrl}/ad_${this.state.adNo}.jpg`} xUrl={`${remoteUrl}/Button.png`} close={this.closeAd} /> : null}
-        {this.state.type === 1 ? <Sidebar adUrl={`${remoteUrl}/ad_side_${this.state.adNo}.jpg`} /> : null}
+        {this.state.showAd ? <Popup adUrl={`${remoteUrl}/popup/ad_${this.state.adNo}.jpg`} xUrl={`${remoteUrl}/Button.png`} close={this.closeAd} /> : null}
+        {this.state.type === 1 ? <Sidebar adUrl={`${remoteUrl}/side/ad_${this.state.adNo}.jpg`} /> : null}
         <h1>小空間，大魔法 - 不可錯過的室內設計訣竅！</h1>
         <div className={style.time}>2017-05-25 14:38:38</div>
         <div className={`${style.content} ${this.state.type === 1 ? style.withSide : ''}`}>
@@ -83,6 +109,7 @@ class App extends Component {
             讓牆上的物品數量不要超過太多也是件重要的事情。在沙發上方擺一張大大的圖片，和一些適當擺放及裱框的照片將會有不錯的效果。在咖啡桌上擺花，並在兩旁擺設蠟燭，可以將這個空間增添幾分優雅。在架子上擺幾本書會更有家的感覺。而擺放噴水裝飾品則可以讓環境感覺更加寧靜。
           </p>
         </div>
+        <div className={style.button} onClick={() => this.submit()}>下一頁</div>
       </div>
     );
   }
