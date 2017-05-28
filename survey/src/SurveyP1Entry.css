@@ -1,0 +1,41 @@
+.entry {
+    margin: 1em 0;
+}
+
+.content {
+    display: inline-block;
+    font-size: 12px;
+    width: 50%;
+    word-break: normal;
+    margin-right: 2em;
+}
+
+.number {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 500;
+    width: 5%;
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+}
+
+.selection {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.radioButton {
+    margin: 10px;
+    display: inline-block;
+    width: 15px;
+    text-align: center;
+}
+
+.horizontal {
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 500;
+}

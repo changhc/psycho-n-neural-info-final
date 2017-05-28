@@ -1,0 +1,23 @@
+body {
+    font-family: verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+
+.header {
+    padding-left: 25px;
+}
+
+.parallelBlock {
+    display: flex;
+    margin: 5px 0;
+    font-size: 15px;
+}
+
+.author {
+    margin-left: 8px;
+    width: 20em;
+    text-decoration: underline;
+    color: #369;
+    cursor: hand;
+    cursor: pointer;
+}

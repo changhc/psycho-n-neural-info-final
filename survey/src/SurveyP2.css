@@ -1,0 +1,28 @@
+.image {
+    width: 95%;
+    height: 90%;
+    border:1px solid black;
+    margin: 5px 0;
+}
+
+.item {
+    width: 120px;
+    height: 120px;
+    min-height: 120px;
+    display: inline-block;
+    margin: 5px;
+}
+
+.index {
+    text-align: center;
+    font-size: 15px;
+    width: 100%;
+}
+
+.imageArea {
+    margin-top: 5em;
+}
+
+.filled {
+    font-weight: bold;
+}
