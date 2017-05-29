@@ -1,8 +1,17 @@
+img {
+    height: 100px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+
 .image {
     width: 95%;
     height: 90%;
     border:1px solid black;
     margin: 5px 0;
+    position: relative;
 }
 
 .item {
@@ -25,4 +34,8 @@
 
 .filled {
     font-weight: bold;
+}
+
+.hidden {
+    display: none;
 }

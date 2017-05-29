@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import style from './Ad.css';
 
-class Sidebar extends Component {
-  render() {
-    return (
-      <div className={style.sidebar}>
-        hi
-      </div>
-    );
-  }
-}
+const Sidebar = props => (
+  <div className={style.sidebar}>
+    <img src={props.adUrl} alt="" />
+  </div>
+);
+
+Sidebar.propTypes = {
+  adUrl: PropTypes.string.isRequired,
+};
 
 export default Sidebar;

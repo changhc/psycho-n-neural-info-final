@@ -4,6 +4,8 @@ import { Route } from 'react-router-dom';
 import SurveyP1Entry from './SurveyP1Entry';
 import style from './Common.css';
 
+const remoteUrl = 'https://psy2017.herokuapp.com';
+
 class SurveyP1 extends Component {
   constructor() {
     super();
@@ -21,7 +23,7 @@ class SurveyP1 extends Component {
   }
 
   fetchSurvey() {
-    window.fetch('http://localhost:5000/api/survey', {
+    window.fetch(`${remoteUrl}/api/survey`, {
       method: 'GET',
       mode: 'cors',
       headers: { Accept: 'application/json' },
@@ -51,7 +53,7 @@ class SurveyP1 extends Component {
     return (
       <div>
         <h4>這是問卷的第1部份。</h4>
-        <h4>首先，請您回答一些關於文章內容或相關看法的問題。</h4>
+        <h4>首先，請您回答一些關於文章內容或相關看法的問題。下列問題中，若您認同或同意敘述的程度愈高，請選擇數字愈大的選項。</h4>
         <SurveyP1Entry id={-1} content="問題說明" />
         <div>
           {this.state.entries.map((entry, index) =>

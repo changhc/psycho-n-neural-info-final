@@ -14,7 +14,7 @@
     "body-parser": "^1.17.1",
     "crypto": "0.0.3",
     "express": "^4.15.2",
-    "mariasql": "^0.2.6"
+    "pg": "^6.2.3"
   },
   "devDependencies": {
     "now": "^5.2.1",

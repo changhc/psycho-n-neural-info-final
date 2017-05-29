@@ -16,3 +16,23 @@
     max-width: 640px;
     margin: 2em auto;
 }
+
+.meta {
+    margin: 2em 0;
+}
+
+.metaChild {
+    display: inline-block;
+    width: 10em;
+    text-align: center;
+    white-space: pre;
+}
+
+.input {
+    padding: 0 1em;
+    display: inline-block;
+}
+
+.editable {
+    border-bottom: 1px black solid;
+}

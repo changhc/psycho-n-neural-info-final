@@ -5,6 +5,7 @@ import {
   Switch,
 } from 'react-router-dom';
 import Cover from './Cover';
+import Meta from './Meta';
 import Reminder from './Reminder';
 import Survey from './Survey';
 import End from './End';
@@ -18,7 +19,8 @@ class App extends Component {
         <div id={style.main}>
           <Switch>
             <Route exact path="/" component={Cover} />
-            <Route exact path="/readme" component={Reminder} />
+            <Route exact path="/basicInfo" component={Meta} />
+            <Route path="/readme/:userId" component={Reminder} />
             <Route
               path="/survey/:userId"
               render={routeProps =>
