@@ -46,7 +46,21 @@ class SurveyP1 extends Component {
       window.alert(`第 ${index + 1} 題未填寫！`);
       return;
     }
-    this.props.history.replace(`${this.props.location.pathname}/2`);
+    window.fetch(`${remoteUrl}/api/result`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        userId: this.props.userId,
+        surveyCheckpoint: this.state.answer[this.state.answer.length - 1] === 3,
+      }),
+    }).then((res) => {
+      if (res.status >= 300) {
+        throw new Error();
+      }
+      this.props.p2Start();
+      this.props.history.replace(`${this.props.location.pathname}/2`);
+    }).catch(err => console.error(err));
   }
 
   render() {
@@ -69,6 +83,8 @@ class SurveyP1 extends Component {
 SurveyP1.propTypes = {
   location: PropTypes.shape(Route.location).isRequired,
   history: PropTypes.shape(Route.history).isRequired,
+  userId: PropTypes.string.isRequired,
+  p2Start: PropTypes.func.isRequired,
 };
 
 export default SurveyP1;

@@ -19,9 +19,11 @@ class Survey extends Component {
       order: [],
       image: [],
       selected: [],
+      p2Time: 0,
     };
     this.submit = this.submit.bind(this);
     this.setOrder = this.setOrder.bind(this);
+    this.p2Start = this.p2Start.bind(this);
   }
 
   componentDidMount() {
@@ -84,7 +86,7 @@ class Survey extends Component {
     this.setState({ order: orderT, selected: selectedT });
   }
 
-  submit(period) {
+  submit() {
     if (this.state.order.indexOf(-1) >= 0) {
       window.alert('請確實填寫順序！');
       return;
@@ -97,7 +99,7 @@ class Survey extends Component {
       body: JSON.stringify({
         userId: this.state.userId,
         order: this.state.order,
-        rankTime: period,
+        rankTime: time - this.state.p2Time,
         timestamp: time,
         timestring: (new Date(time)).toLocaleString(),
       }),
@@ -110,11 +112,15 @@ class Survey extends Component {
     });
   }
 
+  p2Start() {
+    this.setState({ p2Time: Date.now() });
+  }
+
   render() {
     return (
       <Router>
         <Switch>
-          <Route exact path={`${this.state.url}/`} component={SurveyP1} />
+          <Route exact path={`${this.state.url}/`} render={routeProps => <SurveyP1 {...routeProps} userId={this.state.userId} p2Start={this.p2Start} />} />
           <Route exact path={`${this.state.url}/2`} render={routeProps => <SurveyP2 {...routeProps} userId={this.state.userId} image={this.state.image} order={this.state.order} set={this.setOrder} next={this.submit} selected={this.state.selected} />} />
         </Switch>
       </Router>

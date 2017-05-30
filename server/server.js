@@ -50,7 +50,7 @@ server.post('/api/userId', (req, res) => {
     adNo: Math.floor(Math.random() * 5) - 1,
     type: expType,
   };
-  pool.query(`UPDATE ${process.env.TABLE_NAME} SET (expType, adNo) = (${body.type}, ${body.adNo}) WHERE userId = '${req.body.userId}';`, (err, res2) => {
+  pool.query(`UPDATE ${process.env.TABLE_NAME} SET (exp_type, ad_no) = (${body.type}, ${body.adNo}) WHERE user_id = '${req.body.userId}';`, (err, res2) => {
     if (err) {
       console.error(err);
       return;
@@ -62,8 +62,7 @@ server.post('/api/userId', (req, res) => {
 
 server.get('/api/survey', (req, res) => {
   const body = {
-    // TODO: put all questions into this array
-    survey: ['我平常有在注意家中客廳的佈置', '我認為家裡客廳的佈置很棒', '在看這篇文章之前我就想過要好好佈置客廳', '為了確定您有認真作答，這題請回答3。'],
+    survey: ['我平常有在注意家中客廳的佈置。', '我認為家裡客廳的佈置很棒。', '在看這篇文章之前我就想過要好好佈置客廳。', '為了確定您有認真作答，這題請回答3。'],
   }
   res.send(JSON.stringify(body));
 });
@@ -79,17 +78,16 @@ server.get('/api/image', (req, res) => {
 
 server.post('/api/result', (req, res) => {
   if (req.body.query) {
-    pool.query(`SELECT EXISTS (SELECT * FROM ${process.env.TABLE_NAME} WHERE userId = '${req.body.userId}');`, (err, res2) => {
+    pool.query(`SELECT EXISTS (SELECT * FROM ${process.env.TABLE_NAME} WHERE user_id = '${req.body.userId}');`, (err, res2) => {
       if (err) {
         console.error(err);
         return;
       }
-      console.log(res2.rows[0].exists)
       res.status(200).send(JSON.stringify({ exists: res2.rows[0].exists }));
       return;
     });
   } else if (req.body.init) {
-    pool.query(`INSERT INTO ${process.env.TABLE_NAME} (userId, sex, age, major) VALUES ('${req.body.userId}', '${req.body.sex}', '${req.body.age}', '${req.body.major}');`, (err, res2) => {
+    pool.query(`INSERT INTO ${process.env.TABLE_NAME} (user_id, sex, age, major) VALUES ('${req.body.userId}', '${req.body.sex}', '${req.body.age}', '${req.body.major}');`, (err, res2) => {
       if (err) {
         console.error(err);
         return;
@@ -97,7 +95,23 @@ server.post('/api/result', (req, res) => {
       res.sendStatus(202);
     });
   } else if (req.body.next) {  // posting result
-    pool.query(`UPDATE ${process.env.TABLE_NAME} SET (time) = (${req.body.time}) WHERE userId = '${req.body.userId}';`, (err, res2) => {
+    pool.query(`UPDATE ${process.env.TABLE_NAME} SET (click_time) = (${req.body.time}) WHERE user_id = '${req.body.userId}';`, (err, res2) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      res.sendStatus(202);
+    });
+  } else if (req.body.surveyCheckpoint !== undefined) {
+    pool.query(`UPDATE ${process.env.TABLE_NAME} SET (survey_checkpoint) = (${req.body.surveyCheckpoint ? 'true' : 'false'}) WHERE user_id = '${req.body.userId}';`, (err, res2) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      res.sendStatus(202);
+    });
+  } else if (req.body.readTime) {
+    pool.query(`UPDATE ${process.env.TABLE_NAME} SET (read_time) = (${req.body.readTime}) WHERE user_id = '${req.body.userId}';`, (err, res2) => {
       if (err) {
         console.error(err);
         return;
@@ -105,7 +119,7 @@ server.post('/api/result', (req, res) => {
       res.sendStatus(202);
     });
   } else {
-    pool.query(`UPDATE ${process.env.TABLE_NAME} SET (rank1, rank2, rank3, rank4, rank5, rank6, rank7, rankTime, timestamp, timestring) = (${req.body.order[0]}, ${req.body.order[1]}, ${req.body.order[2]}, ${req.body.order[3]}, ${req.body.order[4]}, ${req.body.order[5]}, ${req.body.order[6]}, ${req.body.rankTime}, ${req.body.timestamp}, '${req.body.timestring}') WHERE userId = '${req.body.userId}';`, (err, res2) => {
+    pool.query(`UPDATE ${process.env.TABLE_NAME} SET (rank1, rank2, rank3, rank4, rank5, rank6, rank7, rank_time, timestamp, timestring) = (${req.body.order[0]}, ${req.body.order[1]}, ${req.body.order[2]}, ${req.body.order[3]}, ${req.body.order[4]}, ${req.body.order[5]}, ${req.body.order[6]}, ${req.body.rankTime}, ${req.body.timestamp}, '${req.body.timestring}') WHERE user_id = '${req.body.userId}';`, (err, res2) => {
       if (err) {
         console.error(err);
         return;

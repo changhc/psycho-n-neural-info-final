@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import style from './Common.css';
 
 const keyDown = (event) => {
   const e = event;
-  if (e.key === 'Enter' && !e.shiftKey) {
+  if (e.keyCode === 13 && !e.shiftKey) {
     e.preventDefault();
     e.target.blur();
   }
@@ -56,6 +55,7 @@ class Meta extends Component {
     if (slot === 'age') {
       if (parseInt(e.target.textContent, 10).toString() !== e.target.textContent) {
         window.alert('請輸入正確的年齡');
+        return;
       }
       this.setState({ age: e.target.textContent });
     } else if (slot === 'major') {
@@ -114,7 +114,7 @@ class Meta extends Component {
           <div className={`${style.metaChild} ${style.editable}`} contentEditable suppressContentEditableWarning onBlur={e => this.slotChanged(e, 'age')} onKeyDown={e => keyDown(e)} />
         </div>
         <div className={style.meta}>
-          <div className={style.metaChild}>系級：(若無則填無)</div>
+          <div className={style.metaChild}>系所：(若無則填無)</div>
           <div className={`${style.metaChild} ${style.editable}`} contentEditable suppressContentEditableWarning onBlur={e => this.slotChanged(e, 'major')} onKeyDown={e => keyDown(e)} />
         </div>
         <div className={style.button} onClick={this.submit}>下一頁</div>

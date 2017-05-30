@@ -10,10 +10,11 @@ class Content extends Component {
     super();
     this.state = {
       userId: match.params.userId,
-      type: -1,
+      type: 1,
       adNo: -1,
       showAd: false,
       time: -1,
+      hidden: true,
     };
     this.fetchUserMeta = this.fetchUserMeta.bind(this);
     this.submit = this.submit.bind(this);
@@ -22,6 +23,16 @@ class Content extends Component {
 
   componentDidMount() {
     this.fetchUserMeta();
+    window.addEventListener('visibilitychange', () => {
+      if (window.document.visibilityState === 'hidden') {
+        this.closeAd();
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.keyCode === 116) {
+        e.preventDefault();
+      }
+    });
   }
 
   fetchUserMeta() {
@@ -35,12 +46,15 @@ class Content extends Component {
       }),
     }).then(res => res.json())
     .then((body) => {
-      this.setState({ type: body.type, adNo: body.adNo });
-      if (this.state.type === 0) {
-        setTimeout(() => this.setState({
-          showAd: true, time: Date.now(),
-        }), (Math.random() * 1000) + 500);
-      }
+      this.setState({ type: body.type, adNo: body.adNo }, () => {
+        if (this.state.type === 0) {
+          setTimeout(() => this.setState({
+            showAd: true, time: Date.now(),
+          }), (Math.random() * 1000) + 500);
+        } else {
+          this.setState({ showAd: true, hidden: false });
+        }
+      });
     })
     .catch((err) => {
       console.error(err);
@@ -69,13 +83,17 @@ class Content extends Component {
   }
 
   render() {
+    const popup = this.state.type === 0 && this.state.showAd ? <Popup adUrl={`${remoteUrl}/popup/ad_${this.state.adNo + 1}.jpg`} xUrl={`${remoteUrl}/Button.png`} close={this.closeAd} /> : null;
+    const side = this.state.type === 1 && this.state.showAd ? <Sidebar adUrl={`${remoteUrl}/side/ad_${this.state.adNo + 1}.jpg`} /> : null;
+    const contentStyle = `${style.content} ${this.state.type === 1 ? style.withSide : ''}`;
+    const mainStyle = this.state.type === 1 ? `${style.main} ${this.state.hidden ? style.hidden : null}` : style.main;
     return (
-      <div className={style.main}>
-        {this.state.showAd ? <Popup adUrl={`${remoteUrl}/popup/ad_${this.state.adNo + 1}.jpg`} xUrl={`${remoteUrl}/Button.png`} close={this.closeAd} /> : null}
-        {this.state.type === 1 ? <Sidebar adUrl={`${remoteUrl}/side/ad_${this.state.adNo + 1}.jpg`} /> : null}
+      <div className={mainStyle}>
+        {popup}
+        {side}
         <h1>小空間，大魔法 - 不可錯過的室內設計訣竅！</h1>
         <div className={style.time}>2016-01-25 14:38:38</div>
-        <div className={`${style.content} ${this.state.type === 1 ? style.withSide : ''}`}>
+        <div className={contentStyle}>
           <p>
             要整頓並裝飾好客廳是件困難的工程，尤其是間小客廳時便更加困難。客廳通常是人們來家裡時聚在一起的地方，因此隨時讓客廳乾淨整潔並好好的裝飾，將會是個聰明的想法。雖然我們可能會受限於客廳不大的空間，但仍然有許多方法可以讓即使是很小的客廳，也能看起來舒適且寬敞。
           </p>

@@ -42,3 +42,7 @@ h1 {
     cursor: pointer;
     margin-top: 5em;
 }
+
+.hidden {
+    display: none;
+}

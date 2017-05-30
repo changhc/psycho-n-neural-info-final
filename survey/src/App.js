@@ -7,12 +7,20 @@ import {
 import Cover from './Cover';
 import Meta from './Meta';
 import Reminder from './Reminder';
+import BeforeSurvey from './BeforeSurvey';
 import Survey from './Survey';
 import End from './End';
 import NoMatch from './NoMatch';
 import style from './Common.css';
 
 class App extends Component {
+  componentDidMount() {
+    document.addEventListener('keydown', (e) => {
+      if (e.keyCode === 116) {
+        e.preventDefault();
+      }
+    });
+  }
   render() {
     return (
       <Router>
@@ -21,6 +29,7 @@ class App extends Component {
             <Route exact path="/" component={Cover} />
             <Route exact path="/basicInfo" component={Meta} />
             <Route path="/readme/:userId" component={Reminder} />
+            <Route path="/pre/:userId" component={BeforeSurvey} />
             <Route
               path="/survey/:userId"
               render={routeProps =>
