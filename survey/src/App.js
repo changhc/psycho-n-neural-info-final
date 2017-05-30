@@ -9,6 +9,7 @@ import Meta from './Meta';
 import Reminder from './Reminder';
 import BeforeSurvey from './BeforeSurvey';
 import Survey from './Survey';
+import PostSurvey from './PostSurvey';
 import End from './End';
 import NoMatch from './NoMatch';
 import style from './Common.css';
@@ -35,6 +36,7 @@ class App extends Component {
               render={routeProps =>
                 <Survey {...routeProps} end={this.end} />}
             />
+            <Route path="/post-survey/:userId" render={routeProps => <PostSurvey {...routeProps} />} />
             <Route exact path="/thanks" component={End} />
             <Route component={NoMatch} />
           </Switch>

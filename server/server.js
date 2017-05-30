@@ -118,6 +118,22 @@ server.post('/api/result', (req, res) => {
       }
       res.sendStatus(202);
     });
+  } else if (req.body.postSurvey) {
+    pool.query(`UPDATE ${process.env.TABLE_NAME} SET (remember_seeing, remember_which, is_affected) = (${req.body.remember === 't' ? 'true' : 'false'}, ${req.body.option}, ${req.body.order}) WHERE user_id = '${req.body.userId}';`, (err, res2) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      res.sendStatus(202);
+    });
+  } else if (req.body.remember) {
+    pool.query(`UPDATE ${process.env.TABLE_NAME} SET (remember_seeing) = (${req.body.remember === 't' ? 'true' : 'false'}) WHERE user_id = '${req.body.userId}';`, (err, res2) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      res.sendStatus(202);
+    });
   } else {
     pool.query(`UPDATE ${process.env.TABLE_NAME} SET (rank1, rank2, rank3, rank4, rank5, rank6, rank7, rank_time, timestamp, timestring) = (${req.body.order[0]}, ${req.body.order[1]}, ${req.body.order[2]}, ${req.body.order[3]}, ${req.body.order[4]}, ${req.body.order[5]}, ${req.body.order[6]}, ${req.body.rankTime}, ${req.body.timestamp}, '${req.body.timestring}') WHERE user_id = '${req.body.userId}';`, (err, res2) => {
       if (err) {

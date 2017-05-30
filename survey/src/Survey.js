@@ -105,7 +105,7 @@ class Survey extends Component {
       }),
     }).then((res) => {
       if (res.status < 300) {
-        this.props.history.replace('/thanks');
+        this.props.history.replace(`/post-survey/${this.state.userId}`);
       } else {
         window.location.href = '/404';
       }
