@@ -87,7 +87,9 @@ server.post('/api/result', (req, res) => {
       return;
     });
   } else if (req.body.init) {
-    pool.query(`INSERT INTO ${process.env.TABLE_NAME} (user_id, sex, age, major) VALUES ('${req.body.userId}', '${req.body.sex}', '${req.body.age}', '${req.body.major}');`, (err, res2) => {
+    const major = req.body.major.replace('\'', '').replace('=', '').replace('"', '');
+    const age = req.body.age.replace('\'', '').replace('=', '').replace('"', '');
+    pool.query(`INSERT INTO ${process.env.TABLE_NAME} (user_id, sex, age, major) VALUES ('${req.body.userId}', '${req.body.sex}', '${age}', '${major}');`, (err, res2) => {
       if (err) {
         console.error(err);
         return;
