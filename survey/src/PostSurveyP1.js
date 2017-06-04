@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import style from './Common.css';
-import p2style from './SurveyP2.css';
 
 const remoteUrl = 'https://psy2017.herokuapp.com';
 
